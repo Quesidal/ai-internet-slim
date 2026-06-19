@@ -1,0 +1,32 @@
+services:
+  searxng:
+    image: searxng/searxng@sha256:b93d3f3f4e32da496477e6bc64251b6125b8344e4c3af7bed7714cc701714bd8
+    container_name: slim-searxng
+    ports:
+      - "${SEARXNG_PORT:-8081}:8080"
+    volumes:
+      - ./volumes/searxng-settings:/etc/searxng
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:${SEARXNG_PORT:-8081}/
+      - SEARXNG_LIMITER=false
+      - SEARXNG_SECRET=${SEARXNG_SECRET}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  crawl4ai:
+    image: unclecode/crawl4ai@sha256:b243f684ad20f71ee108ab3fc3f31f3349eb5b31a9947b9e563d868417141aad
+    container_name: slim-crawl4ai
+    ports:
+      - "${CRAWL4AI_PORT:-11235}:11235"
+    volumes:
+      - /dev/shm:/dev/shm
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 1G

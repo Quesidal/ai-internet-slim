@@ -1,0 +1,6 @@
+# Environment — contains secrets
+.env
+
+# Data volumes
+volumes/searxng-settings/*
+!volumes/searxng-settings/.gitkeep
